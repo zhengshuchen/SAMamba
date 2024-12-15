@@ -20,7 +20,8 @@ SAMamba 是一个用于红外小目标分割的框架
 
 ## 训练
 
-使用下面的命令进行训练:
+如果您想训练自己的模型，请从[官方存储库](https://github.com/facebookresearch/sam2)
+下载预训练模型，并使用下面的命令进行训练:
 
 ```train
 python train.py --opt ./options/train.yaml
