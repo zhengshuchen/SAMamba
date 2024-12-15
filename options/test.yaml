@@ -1,0 +1,21 @@
+exp:
+  save_dir: /media/data2/zhengshuchen/code/SAMamba/experiment/output
+  bs: 4
+  device: 3
+
+model:
+  net:
+    type: SAMamba
+#    type: HCFnet
+#    gt_ds: False
+
+
+dataset:
+  test:
+    type: Dataset_test
+    data_root: /media/data2/zhengshuchen/code/irstd/test
+    img_sz: 1024
+    get_name: True
+
+resume:
+  net_path: /media/data2/zhengshuchen/code/SAMamba/experiment/sota_irstd/models/net_best_mean.pth
