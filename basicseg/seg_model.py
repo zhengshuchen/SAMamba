@@ -54,7 +54,7 @@ class Seg_model(Base_model):
         else:
             return self.dict_wrapper(batch_loss)
 
-    def optimize_one_iter(self, data):
+    def optimize_one_iter(self, data, epoch):
         if self.bd_loss:
             img, mask, dist_map = data
             img, mask, dist_map = img.to(self.device), mask.to(self.device), dist_map.to(self.device)

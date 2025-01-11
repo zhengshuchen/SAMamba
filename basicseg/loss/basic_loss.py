@@ -80,3 +80,96 @@ class FocalLoss(nn.Module):
             return torch.sum(F_loss)
         else:
             return F_loss
+@LOSS_REGISTRY.register()
+class SoftIoULoss(nn.Module):
+    def __init__(self, reduction='mean'):
+        super(SoftIoULoss, self).__init__()
+        self.reduction = reduction
+
+    def forward(self, inputs, targets):
+        inputs = torch.sigmoid(inputs)  # Convert logits to probabilities
+        intersection = (inputs * targets).sum(dim=(1, 2, 3))
+        union = inputs.sum(dim=(1, 2, 3)) + targets.sum(dim=(1, 2, 3)) - intersection
+
+        soft_iou = (intersection + 1e-6) / (union + 1e-6)
+        loss = 1 - soft_iou
+
+        if self.reduction == 'mean':
+            return loss.mean()
+        elif self.reduction == 'sum':
+            return loss.sum()
+        else:
+            return loss
+@LOSS_REGISTRY.register()
+class WeightedDiceLoss(nn.Module):
+    def __init__(self, weight_map=None, reduction='mean'):
+        super(WeightedDiceLoss, self).__init__()
+        self.weight_map = weight_map  # Optional weight map for per-pixel weights
+        self.reduction = reduction
+
+    def forward(self, inputs, targets):
+        inputs = torch.sigmoid(inputs)  # Convert logits to probabilities
+
+        if self.weight_map is None:
+            weight_map = torch.ones_like(targets)
+        else:
+            weight_map = self.weight_map
+
+        intersection = 2 * (inputs * targets * weight_map).sum(dim=(1, 2, 3))
+        union = (inputs * weight_map).sum(dim=(1, 2, 3)) + (targets * weight_map).sum(dim=(1, 2, 3))
+
+        dice = (intersection + 1e-6) / (union + 1e-6)
+        loss = 1 - dice
+
+        if self.reduction == 'mean':
+            return loss.mean()
+        elif self.reduction == 'sum':
+            return loss.sum()
+        else:
+            return loss
+
+@LOSS_REGISTRY.register()
+class TverskyLoss(nn.Module):
+    def __init__(self, alpha=0.7, beta=0.3, reduction='mean'):
+        super(TverskyLoss, self).__init__()
+        self.alpha = alpha
+        self.beta = beta
+        self.reduction = reduction
+
+    def forward(self, inputs, targets):
+        inputs = torch.sigmoid(inputs)  # Convert logits to probabilities
+        intersection = (inputs * targets).sum(dim=(1, 2, 3))
+        false_positive = ((1 - targets) * inputs).sum(dim=(1, 2, 3))
+        false_negative = ((1 - inputs) * targets).sum(dim=(1, 2, 3))
+
+        tversky = intersection / (intersection + self.alpha * false_positive + self.beta * false_negative + 1e-6)
+        loss = 1 - tversky
+
+        if self.reduction == 'mean':
+            return loss.mean()
+        elif self.reduction == 'sum':
+            return loss.sum()
+        else:
+            return loss
+@LOSS_REGISTRY.register()
+class BoundaryLoss(nn.Module):
+    def __init__(self, reduction='mean'):
+        super(BoundaryLoss, self).__init__()
+        self.reduction = reduction
+
+    def forward(self, inputs, targets):
+        inputs = torch.sigmoid(inputs)  # Convert logits to probabilities
+
+        # Calculate gradients (Sobel operator can also be used)
+        grad_inputs = torch.abs(torch.gradient(inputs, dim=(2, 3))[0] + torch.gradient(inputs, dim=(2, 3))[1])
+        grad_targets = torch.abs(torch.gradient(targets, dim=(2, 3))[0] + torch.gradient(targets, dim=(2, 3))[1])
+
+        # Boundary loss as L1 distance between gradients
+        boundary_loss = torch.abs(grad_inputs - grad_targets).sum(dim=(1, 2, 3))
+
+        if self.reduction == 'mean':
+            return boundary_loss.mean()
+        elif self.reduction == 'sum':
+            return boundary_loss.sum()
+        else:
+            return boundary_loss

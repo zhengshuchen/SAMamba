@@ -124,7 +124,7 @@ def main():
         for idx, data in enumerate(train_loader):
             cur_iter += 1
             model.update_learning_rate(cur_iter, idx)
-            model.optimize_one_iter(data)
+            model.optimize_one_iter(data, epoch)
         epoch_time = time.time() - epoch_st_time
         log_vars = {'epoch': epoch}
         log_vars.update({'lrs': model.get_current_learning_rate()})

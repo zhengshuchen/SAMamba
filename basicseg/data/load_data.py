@@ -75,7 +75,7 @@ class Dataset_test(Basedataset):
     def __init__(self, opt):
         super().__init__(opt)
     def setup_transform_fn(self):
-        return aug_transform_test(self.opt)
+        return aug_transform_test_new(self.opt)
 
 @DATASET_REGISTRY.register()
 class Dataset_aug_s(Basedataset):
@@ -96,7 +96,7 @@ class Dataset_aug_bac(Basedataset):
     def __init__(self, opt):
         super().__init__(opt)
     def setup_transform_fn(self):
-        return aug_transform_bac(self.opt)
+        return aug_transform_train(self.opt)
 
 
 @DATASET_REGISTRY.register()
