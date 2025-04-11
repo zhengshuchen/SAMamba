@@ -22,6 +22,7 @@ class Binary_metric():
         self.norm_metric = {'precision':0., 'recall':0., 'fscore':0., 'iou':0.}
         self.cnt = 0.
 
+
     def update(self, pred, target):
         # for safety
         pred = pred.detach().clone()
@@ -66,8 +67,7 @@ class Binary_metric():
     def mean_compute(self):
         eps = 1e-6
         precision = self.tp / (self.tp + self.fp + eps)
-        Fa = self.fp / (self.fp + self.tn + eps)
         recall = self.tp / (self.tp + self.fn + eps)
         fscore = 2 * precision * recall / (precision + recall + eps)
         iou = self.tp / (self.tp + self.fn + self.fp + eps)
-        return {"precision":precision, "recall":recall, "fscore":fscore, "iou":iou, "Fa": Fa}
+        return {"precision":precision, "recall":recall, "fscore":fscore, "iou":iou}

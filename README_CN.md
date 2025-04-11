@@ -1,7 +1,7 @@
 
 # SAMamba
 ## <div align="center"><b><a href="README.md">English</a> | <a href="README_CN.md">简体中文</a></b></div>
-SAMamba 是一个用于红外小目标分割的框架，我们将在后续公布完整代码
+SAMamba 是一个用于红外小目标分割的框架，我们将在后续公布完整代码和模型权重
 ## 数据集结构
 如果你想要在自己的数据集上训练，你需要按照下列的结构准备数据:
 ```

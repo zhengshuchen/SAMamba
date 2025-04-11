@@ -22,6 +22,7 @@ class Seg_model(Base_model):
     def setup_metric(self):
         self.best_norm_metric = {'epoch':0., 'iou':0., 'net': None}
         self.best_mean_metric = {'epoch':0, 'iou':0., 'net': None}
+        self.best_F1 = {'epoch': 0, 'F1': 0., 'net': None}
         self.metric = Binary_metric()
         self.epoch_metric = {}
         self.batch_metric = {}

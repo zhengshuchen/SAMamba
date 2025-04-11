@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 from thop import profile
-from basicseg.main_blocks import MBHF, ACF
+from basicseg.main_blocks import CSI, DPCF
 from basicseg.mona_with_select import MonaOp
 from basicseg.networks.sam2.build_sam import build_sam2
 from thop import clever_format  # 用于格式化输出的 MACs 和参数数量
@@ -52,23 +52,23 @@ class SAMamba(nn.Module):
         self.encoder.blocks = nn.Sequential(
             *blocks
         )
-        self.mbhf1 = MBHF(96, 64)
-        self.mbhf2 = MBHF(192, 64)
-        self.mbhf3 = MBHF(384, 64)
-        self.mbhf4 = MBHF(768, 64)
+        self.mbhf1 = CSI(96, 128)
+        self.mbhf2 = CSI(192, 128)
+        self.mbhf3 = CSI(384, 128)
+        self.mbhf4 = CSI(768, 128)
 
-        self.up1 = (ACF(64, 64))
-        self.up2 = (ACF(64, 64))
-        self.up3 = (ACF(64, 64))
+        self.up1 = (DPCF(128, 128))
+        self.up2 = (DPCF(128, 128))
+        self.up3 = (DPCF(128, 128))
         self.deconv1 = nn.Sequential(
-            nn.ConvTranspose2d(64, 64, kernel_size=4, stride=2, padding=1),
-            nn.BatchNorm2d(64),
+            nn.ConvTranspose2d(128, 128, kernel_size=4, stride=2, padding=1),
+            nn.BatchNorm2d(128),
             nn.ReLU(inplace=True))
         self.deconv2 = nn.Sequential(
-            nn.ConvTranspose2d(64, 64, kernel_size=4, stride=2, padding=1),
-            nn.BatchNorm2d(64),
+            nn.ConvTranspose2d(128, 128, kernel_size=4, stride=2, padding=1),
+            nn.BatchNorm2d(128),
             nn.ReLU(inplace=True))
-        self.head = nn.Conv2d(64, 1, kernel_size=1)
+        self.head = nn.Conv2d(128, 1, kernel_size=1)
 
     def forward(self, x):
         #
@@ -89,41 +89,41 @@ if __name__ == '__main__':
     # print(net.encoder)
 
     # 检查当前设备并将模型移动到相应设备
-    device = torch.device('cuda:2' if torch.cuda.is_available() else 'cpu')
+    device = torch.device('cuda:3' if torch.cuda.is_available() else 'cpu')
     net.to(device)
     input_tensor = input_tensor.to(device)
 
-    # # 使用 thop 计算 MACs 和参数量
-    # flops, params = profile(net, inputs=(input_tensor,))
-    # flops, params = clever_format([flops, params], "%.2f")
+    # 使用 thop 计算 MACs 和参数量
+    flops, params = profile(net, inputs=(input_tensor,))
+    flops, params = clever_format([flops, params], "%.2f")
+
+    # 打印计算成本和参数量
+    print(f"Computational cost (MACs): {flops}")
+    print(f"Number of parameters: {params}")
+
+    # # 测试 100 张图片的推理时间
+    # total_time = 0
+    # num_images = 100
     #
-    # # 打印计算成本和参数量
-    # print(f"Computational cost (MACs): {flops}")
-    # print(f"Number of parameters: {params}")
-
-    # 测试 100 张图片的推理时间
-    total_time = 0
-    num_images = 100
-
-    # 确保模型处于评估模式
-    net.eval()
-
-    with torch.no_grad():  # 禁用梯度计算以提高推理速度
-        for _ in range(num_images):
-            torch.cuda.synchronize()  # 同步 GPU 和 CPU，确保时间精确
-            start = time.time()
-            result = net(input_tensor)
-            torch.cuda.synchronize()
-            end = time.time()
-
-            infer_time = end - start
-            total_time += infer_time
-
-            # print(f'Single inference time: {infer_time:.6f} seconds')
-
-    # 计算平均推理时间和 FPS
-    average_time = total_time / num_images
-    fps = 1 / average_time if average_time > 0 else float('inf')
-
-    print(f'Average inference time for 100 images: {average_time:.6f} seconds')
-    print(f'FPS: {fps:.2f}')
+    # # 确保模型处于评估模式
+    # net.eval()
+    #
+    # with torch.no_grad():  # 禁用梯度计算以提高推理速度
+    #     for _ in range(num_images):
+    #         torch.cuda.synchronize()  # 同步 GPU 和 CPU，确保时间精确
+    #         start = time.time()
+    #         result = net(input_tensor)
+    #         torch.cuda.synchronize()
+    #         end = time.time()
+    #
+    #         infer_time = end - start
+    #         total_time += infer_time
+    #
+    #         # print(f'Single inference time: {infer_time:.6f} seconds')
+    #
+    # # 计算平均推理时间和 FPS
+    # average_time = total_time / num_images
+    # fps = 1 / average_time if average_time > 0 else float('inf')
+    #
+    # print(f'Average inference time for 100 images: {average_time:.6f} seconds')
+    # print(f'FPS: {fps:.2f}')

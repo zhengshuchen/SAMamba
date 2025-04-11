@@ -63,8 +63,9 @@ def main():
     test_mean_metric = model.get_mean_metric()
     test_norm_metric = model.get_norm_metric()
     ########## trainging done ##########
-    print(f"best_mean_metric: [miou: {test_mean_metric['iou']:.4f}] [mfscore: {test_mean_metric['fscore']:.4f}]")
-    print(f"best_norm_metric: [niou: {test_norm_metric['iou']:.4f}] [nfscore: {test_norm_metric['fscore']:.4f}]")
+    print(f"best_mean_metric: [miou: {test_mean_metric['iou']:.4f}] [F1: {test_mean_metric['fscore']:.4f}]")
+    print(f"best_norm_metric: [niou: {test_norm_metric['iou']:.4f}]")
+
 
 if __name__ == '__main__':
     main()

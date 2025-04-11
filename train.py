@@ -151,6 +151,10 @@ def main():
                 model.best_norm_metric['iou'] = test_norm_metric['iou']
                 model.best_norm_metric['net'] = copy.deepcopy(model.net.state_dict())
                 model.best_norm_metric['epoch'] = epoch
+            if test_mean_metric['fscore'] > model.best_F1['F1']:
+                model.best_F1['F1'] = test_mean_metric['fscore']
+                model.best_F1['net'] = copy.deepcopy(model.net.state_dict())
+                model.best_F1['epoch'] = epoch
             # model.net.train()
             model.model_to_train()
         ########## saving_model ##########
@@ -165,8 +169,10 @@ def main():
         model.save_network(opt, model.net, current_epoch='latest')
         model.save_network(opt, model.best_mean_metric['net'], current_epoch='best_mean', net_dict=True)
         model.save_network(opt, model.best_norm_metric['net'], current_epoch='best_norm', net_dict=True)
+        model.save_network(opt, model.best_F1['net'], current_epoch='best_F1', net_dict=True)
         logger.info(f"best_mean_metric: [epoch: {model.best_mean_metric['epoch']}] [iou: {model.best_mean_metric['iou']:.4f}]")
         logger.info(f"best_norm_metric: [epoch: {model.best_norm_metric['epoch']}] [iou: {model.best_norm_metric['iou']:.4f}]")
+        logger.info(f"best_F1: [epoch: {model.best_F1['epoch']}] [F1: {model.best_F1['F1']:.4f}]")
 
 if __name__ == '__main__':
     main()

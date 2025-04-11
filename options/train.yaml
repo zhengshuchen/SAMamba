@@ -1,12 +1,12 @@
 exp:
   name: SAMamba
   save_exp: True
-  bs: 4
-  total_epochs: 300
+  bs: 2
+  total_epochs: 400
   log_interval: 1
-  save_interval: 100
+  save_interval: 150
   test_interval: 1
-  device: 0
+  device: 1
 model:
   net:
     type: SAMamba
@@ -41,12 +41,12 @@ dataset:
   name:
   train:
     type: Dataset_aug_bac
-    data_root: /media/data2/zhengshuchen/code/SIRST/trainval
+    data_root: /media/data2/zhengshuchen/code/nudt/trainval
     img_sz: 1024
 
   test:
     type: Dataset_test
-    data_root: /media/data2/zhengshuchen/code/SIRST/test
+    data_root: /media/data2/zhengshuchen/code/nudt/test
     img_sz: 1024
 
 resume:

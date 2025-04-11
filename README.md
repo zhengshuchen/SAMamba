@@ -1,7 +1,7 @@
 
 # SAMamba
 ## <div align="center"><b><a href="README.md">English</a> | <a href="README_CN.md">简体中文</a></b></div>
-SAMamba is a framework for Infrared Small Object Segmentation, we will release the complete code later.
+SAMamba is a framework for infrared small target segmentation, we will publish the full code and model weights later.
 ## Dataset Structe
 If you want to train on custom datasets you should paper dataset as following structure:
 ```
