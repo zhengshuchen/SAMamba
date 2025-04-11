@@ -34,3 +34,13 @@ python train.py --opt ./options/train.yaml
 ```eval
 python test.py --opt ./options/test.yaml
 ```
+## 模型权重
+代码完整公开后，你可以下载模型权重:
+
+- SAMamba
+
+| Dateset | IoU   | nIoU  | F1  |
+|------------|-------|-------|-------|
+|  NUAA-SIRST  | 81.08 | 79.17 | 98.55 |
+|  IRSTD-1K  | 73.53 | 68.99 | 84.75 |
+|  NUDT-SIRST  | 93.13 | 93.15 | 96.44 |

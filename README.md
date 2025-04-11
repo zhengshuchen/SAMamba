@@ -30,3 +30,12 @@ To evaluate pretrained model, run:
 ```eval
 python test.py --opt ./options/test.yaml
 ```
+## Model weight
+Once the code is fully exposed, you can download the model weights:
+- SAMamba
+
+| Dateset | IoU   | nIoU  | F1  |
+|------------|-------|-------|-------|
+|  NUAA-SIRST  | 81.08 | 79.17 | 98.55 |
+|  IRSTD-1K  | 73.53 | 68.99 | 84.75 |
+|  NUDT-SIRST  | 93.13 | 93.15 | 96.44 |
