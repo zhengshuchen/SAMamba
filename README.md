@@ -1,7 +1,7 @@
 
 # SAMamba
 ## <div align="center"><b><a href="README.md">English</a> | <a href="README_CN.md">简体中文</a></b></div>
-SAMamba is a framework for infrared small target segmentation, we will publish the full code and model weights later.
+SAMamba is a framework for infrared small target segmentation and has been successfully accepted by Information Fusion. Meanwhile, our complete code and model weights have been published!
 ## Dataset Structe
 If you want to train on custom datasets you should paper dataset as following structure:
 ```
@@ -31,8 +31,8 @@ To evaluate pretrained model, run:
 python test.py --opt ./options/test.yaml
 ```
 ## Model weight
-Once the code is fully exposed, you can download the model weights:
-- SAMamba
+You can download the model weights:
+- [SAMamba](https://drive.google.com/drive/folders/1UrIj44_NIq5C6ldRuH1DMfM6m0kiiz5d?usp=drive_link)
 
 | Dateset | IoU   | nIoU  | F1  |
 |------------|-------|-------|-------|

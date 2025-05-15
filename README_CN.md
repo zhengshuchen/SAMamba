@@ -1,7 +1,7 @@
 
 # SAMamba
 ## <div align="center"><b><a href="README.md">English</a> | <a href="README_CN.md">简体中文</a></b></div>
-SAMamba 是一个用于红外小目标分割的框架，我们将在后续公布完整代码和模型权重
+SAMamba 是一个用于红外小目标分割的框架，目前已成功被《Information Fusion》接收，同时我们的完整代码和模型权重已经公布！
 ## 数据集结构
 如果你想要在自己的数据集上训练，你需要按照下列的结构准备数据:
 ```
@@ -35,9 +35,8 @@ python train.py --opt ./options/train.yaml
 python test.py --opt ./options/test.yaml
 ```
 ## 模型权重
-代码完整公开后，你可以下载模型权重:
-
-- SAMamba
+你可以下载模型权重:
+- [SAMamba](https://drive.google.com/drive/folders/1UrIj44_NIq5C6ldRuH1DMfM6m0kiiz5d?usp=drive_link)
 
 | Dateset | IoU   | nIoU  | F1  |
 |------------|-------|-------|-------|
