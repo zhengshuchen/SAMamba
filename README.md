@@ -36,6 +36,6 @@ You can download the model weights:
 
 | Dateset | IoU   | nIoU  | F1  |
 |------------|-------|-------|-------|
-|  NUAA-SIRST  | 81.08 | 79.17 | 98.55 |
+|  NUAA-SIRST  | 81.08 | 79.17 | 89.55 |
 |  IRSTD-1K  | 73.53 | 68.99 | 84.75 |
 |  NUDT-SIRST  | 93.13 | 93.15 | 96.44 |
